@@ -35,8 +35,8 @@ void handle_tcp_client(SOCKET client_socket) {
     }
 
     // 打开文件准备写入
-    FILE* file = fopen(filename.c_str(), "wb");
-    if (!file) {
+    FILE* file = nullptr;
+    if (fopen_s(&file, filename.c_str(), "wb") != 0 || !file) {
         lock_guard<mutex> lock(cout_mutex);
         cerr << "无法创建文件: " << filename << endl;
         closesocket(client_socket);
